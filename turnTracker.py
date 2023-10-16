@@ -71,24 +71,26 @@ class TurnTracker:
         
         
             
+            
 
             
     
 tt = TurnTracker()
-tt.addPlayer('Jake')
-tt.addPlayer('Lina')
-tt.addPlayer('Tim')
+tt.addPlayer("Jake")
+tt.addPlayer("Lina")
+tt.addPlayer("Tim")
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+tt.skipNextPlayer() # Tim plays Skip card 
+print(tt.nextPlayer())
+tt.reverseTurnOrder() # Lina plays Reverse card
+print(tt.nextPlayer())
+tt.skipNextPlayer() # Jake plays Skip card
+print(tt.nextPlayer())
+print(tt.nextPlayer())
 
-tt.printTT()
-print('---')
-print(tt.nextPlayer())
-print(tt.nextPlayer())
-print(tt.nextPlayer())
-tt.reverseTurnOrder()
-print(tt.nextPlayer())
-print('--')
-tt.printTT()
-
-#tt.numberOfPlayers()
+#figure out what time complexity is
+#figure out what testTurnTracker.py should look like
 
 
