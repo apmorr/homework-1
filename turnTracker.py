@@ -2,95 +2,86 @@ class Node:
    def __init__(self, data):
       self.data = data
       self.next = None
-      self.last = None
-
 class TurnTracker:
     def __init__(self):
       self.head = None
-      self.last = None
       self.prev = None
-     
+      self.L = list()
+      
     def addPlayer(self, player):
         new_node = Node(player)
+        self.L.append(player)
         if self.head is None:
             self.head = new_node
             return
-            
         temp = self.head
-        while(temp.next):
+        while (temp.next):
             temp = temp.next
-            
         temp.next = new_node
-
-    def printTT(self):
-        current_node = self.head
-        while(current_node):
-            print(current_node.data)
-            current_node = current_node.next
-            
-    def nextPlayer(self):
-        temp = self.head
-        current = None
         
-        if(temp):
-            current = temp.data
-            self.addPlayer(temp.data)
-            self.prev = temp
-            self.head = temp.next
-        return current
+        
+        
+    
+    def nextPlayer(self):
+        #tList = self.L
+        temp = self.L[0]
+        if temp:
+            print(temp)
+            self.L.pop(0)
+            self.L.append(temp)
+            
+    def skipNextPlayer(self):
+        #print(self.L)
+        #temp = self.L[len(self.L)-1]
+        #print(temp)
+        temp = self.L[0]
+        self.L.pop(0)
+        self.L.append(temp)
+        print(self.L)
+
 
     def numberOfPlayers(self):
-        current_node = self.head
-        num = 0
-        while(current_node):
-            current_node = current_node.next
-            num += 1
-        print(num)
-    
-    def skipNextPlayer(self):
-        temp = self.head
-        self.addPlayer(temp.data)
-        #print(temp.data, 'yo')
-        self.prev = temp
-        self.head = temp.next
-        current = self.head
+        print(len(self.L))
         
-        #print(current.data, 'hey')
-            
+        
     def reverseTurnOrder(self):
-        prev = None
-        current = self.head
-        temp = self.head
-        while(current is not None):
-            next = current.next
-            current.next = prev
-            prev = current
-            current = next
-        self.head = prev.next
-        self.addPlayer(prev.data)
+        temp = []
+        for x in self.L:
+            temp.insert(0, x)
+        self.L = temp
+        return self.L
         
-        
-            
-            
+    def printTT(self):
+        current_node = self.head
+        while (current_node):
+            print(current_node.data)
+            current_node = current_node.next
+       
 
-            
-    
+
 tt = TurnTracker()
-tt.addPlayer("Jake")
-tt.addPlayer("Lina")
-tt.addPlayer("Tim")
-print(tt.nextPlayer())
-print(tt.nextPlayer())
-print(tt.nextPlayer())
-tt.skipNextPlayer() # Tim plays Skip card 
-print(tt.nextPlayer())
-tt.reverseTurnOrder() # Lina plays Reverse card
-print(tt.nextPlayer())
-tt.skipNextPlayer() # Jake plays Skip card
-print(tt.nextPlayer())
-print(tt.nextPlayer())
+tt.addPlayer('james')
+tt.addPlayer('mike')
+tt.addPlayer('bella')
 
-#figure out what time complexity is
-#figure out what testTurnTracker.py should look like
+print('----')
+tt.nextPlayer()
+tt.nextPlayer()
+tt.nextPlayer()
+tt.nextPlayer()
+print('---')
+tt.skipNextPlayer()
+print('----------')
+tt.nextPlayer()
+tt.nextPlayer()
+tt.nextPlayer()
+tt.nextPlayer()
+print('---')
+tt.numberOfPlayers()
+print('---')
+print(tt.reverseTurnOrder())
 
+
+print('--')
+tt.printTT()
 
