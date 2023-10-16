@@ -8,6 +8,7 @@ class TurnTracker:
     def __init__(self):
       self.head = None
       self.last = None
+      self.prev = None
      
     def addPlayer(self, player):
         new_node = Node(player)
@@ -29,16 +30,14 @@ class TurnTracker:
             
     def nextPlayer(self):
         temp = self.head
+        current = None
         
         if(temp):
-            print(temp.data)
+            current = temp.data
             self.addPlayer(temp.data)
             self.prev = temp
             self.head = temp.next
-            
-            
-                
-
+        return current
 
     def numberOfPlayers(self):
         current_node = self.head
@@ -57,35 +56,39 @@ class TurnTracker:
         current = self.head
         
         #print(current.data, 'hey')
-        
-    
-    def printLL(self):
+            
+    def reverseTurnOrder(self):
+        prev = None
         current = self.head
-        while(current):
-            print(current.data)
-            current = current.next
+        while(current is not None):
+            next = current.next
+            current.next = prev
+            prev = current
+            current = next
+        self.head = prev
+            
+            
+            
+        
+        
+        
+            
+
+            
+            
+            
+            
     
 tt = TurnTracker()
 tt.addPlayer('Jake')
 tt.addPlayer('Lina')
 tt.addPlayer('Tim')
-tt.printLL()
+
+tt.reverseTurnOrder()
 tt.printTT()
-print('------------')
-
-tt.nextPlayer() #jake 1
-tt.nextPlayer() #lina 2
-tt.nextPlayer() #tim 3
-tt.skipNextPlayer() #tim -> jake -> lina 
-tt.nextPlayer() #lina 2
-tt.skipNextPlayer() #lina -> tim -> jake
-tt.nextPlayer() #jake 1
-tt.nextPlayer() #lina 2
+tt.printLL()
 
 
-
-
-
-tt.numberOfPlayers()
+#tt.numberOfPlayers()
 
 
