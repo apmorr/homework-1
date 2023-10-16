@@ -6,9 +6,9 @@ class Node:
       
 class TurnTracker:
     def __init__(self):
-      self._head = None
-      self._tail = None
-      self._count = 0
+        self._head = None
+        self._tail = None
+        self._count = 0
       
     def addPlayer(self, player):
         new_node = Node(player)
@@ -22,6 +22,7 @@ class TurnTracker:
             new_node.prev = self._tail
             self._tail = new_node
         self._count += 1
+
         
     def remove(self, data): ##this works as intended
         cur = Node(data)
@@ -35,15 +36,27 @@ class TurnTracker:
         
         
     def nextPlayer(self): ##does not work yet
-        #tList = self.L
+        
         temp = self._head
-        if temp.next != None:
-            self.head = temp.next
-            self.remove(temp.data)
+        current = None
+        
+        if(temp):
+            current = temp.data
             self.addPlayer(temp.data)
-            return temp.data
-        else:
-            return temp.prev
+            self._count -= 1
+            self._prev = temp
+            self._head = temp.next
+        return current
+
+        '''temp =self._head
+        current = None
+        if (temp):
+            current = temp.data
+            self.addPlayer(current)
+            temp = temp.next
+        self.head = temp
+        return temp.data'''
+        
             
     def skipNextPlayer(self):
         #print(self.L)
@@ -56,8 +69,8 @@ class TurnTracker:
 
 
     def numberOfPlayers(self):
-        print(len(self.L))
-        
+        return self._count
+
         
     def reverseTurnOrder(self):
         temp = []
@@ -67,10 +80,21 @@ class TurnTracker:
         return self.L
         
     def printTT(self):
-        current_node = self.head
-        while (current_node):
-            print(current_node.data)
+        cur = self._head
+        print('traverse foward')
+        temp = cur
+        while cur.next!=None:
+            print(temp.data, end=" ")
+            temp = temp.next
+            
+
+        '''current_node = self._head
+        elem = []
+        temp = current_node.next
+        while current_node != None:
             current_node = current_node.next
+            elem.append(current_node.data)'''
+
        
 
 
@@ -79,6 +103,11 @@ tt.addPlayer(77)
 tt.addPlayer(45)
 tt.addPlayer(82)
 tt.addPlayer(10)
+tt.printTT()
+'''print(tt.nextPlayer())
 print(tt.nextPlayer())
 print(tt.nextPlayer())
 print(tt.nextPlayer())
+print(tt.nextPlayer())
+print(tt.numberOfPlayers())'''
+
