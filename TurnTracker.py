@@ -2,11 +2,12 @@ class Node:
    def __init__(self, data):
       self.data = data
       self.next = None
-      self.prev = None
+      self.last = None
 
 class TurnTracker:
     def __init__(self):
       self.head = None
+      self.last = None
      
     def addPlayer(self, player):
         new_node = Node(player)
@@ -26,7 +27,17 @@ class TurnTracker:
             print(current_node.data)
             current_node = current_node.next
             
-    #def nextPlayer(self):
+    def nextPlayer(self):
+        temp = self.head
+        
+        if(temp):
+            print(temp.data)
+            self.addPlayer(temp.data)
+            self.prev = temp
+            self.head = temp.next
+            
+            
+                
 
 
     def numberOfPlayers(self):
@@ -39,13 +50,42 @@ class TurnTracker:
     
     def skipNextPlayer(self):
         temp = self.head
-        temp = temp.next.next
-
-        print(temp.data)
+        self.addPlayer(temp.data)
+        #print(temp.data, 'yo')
+        self.prev = temp
+        self.head = temp.next
+        current = self.head
+        
+        #print(current.data, 'hey')
+        
     
-    
+    def printLL(self):
+        current = self.head
+        while(current):
+            print(current.data)
+            current = current.next
     
 tt = TurnTracker()
-tt.addPlayer('james')
-tt.addPlayer('mike')
-tt.addPlayer('sam')
+tt.addPlayer('Jake')
+tt.addPlayer('Lina')
+tt.addPlayer('Tim')
+tt.printLL()
+tt.printTT()
+print('------------')
+
+tt.nextPlayer() #jake 1
+tt.nextPlayer() #lina 2
+tt.nextPlayer() #tim 3
+tt.skipNextPlayer() #tim -> jake -> lina 
+tt.nextPlayer() #lina 2
+tt.skipNextPlayer() #lina -> tim -> jake
+tt.nextPlayer() #jake 1
+tt.nextPlayer() #lina 2
+
+
+
+
+
+tt.numberOfPlayers()
+
+
