@@ -60,24 +60,18 @@ class TurnTracker:
     def reverseTurnOrder(self):
         prev = None
         current = self.head
+        temp = self.head
         while(current is not None):
             next = current.next
             current.next = prev
             prev = current
             current = next
-        self.head = prev
-            
-#cant figure out how to reverse through a linked list, might need variables to call through the class because the code isnt remeboring where o leave off. (tim will skip to lina, then lina reverses but it was left off at time when it should have been at lina)
-#learn more about the nodes and make a TestTurnTracker.py file
-#almsot there (use google, and other peoples projects to try and find linked list methods
-        
+        self.head = prev.next
+        self.addPlayer(prev.data)
         
         
             
 
-            
-            
-            
             
     
 tt = TurnTracker()
@@ -85,10 +79,15 @@ tt.addPlayer('Jake')
 tt.addPlayer('Lina')
 tt.addPlayer('Tim')
 
-tt.reverseTurnOrder()
 tt.printTT()
-tt.printLL()
-
+print('---')
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+tt.reverseTurnOrder()
+print(tt.nextPlayer())
+print('--')
+tt.printTT()
 
 #tt.numberOfPlayers()
 
