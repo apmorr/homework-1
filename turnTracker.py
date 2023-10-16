@@ -2,23 +2,27 @@ class Node:
    def __init__(self, data):
       self.data = data
       self.next = None
+      self.prev = None
       
 class TurnTracker:
     def __init__(self):
       self.head = None
-      self.prev = None
-      self.L = list()
+      self.tail = None
+      self.size = 0
       
     def addPlayer(self, player):
         new_node = Node(player)
-        self.L.append(player)
-        if self.head is None:
+        current = self.Head
+        if self.size == 0 and not self.head and not self.tail:
             self.head = new_node
-            return
-        temp = self.head
-        while (temp.next):
-            temp = temp.next
-        temp.next = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            new_node.prev = self.tail
+            self.tail = new_node
+        self.size += 1
+        
+        
         
         
         
