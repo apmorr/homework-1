@@ -67,8 +67,9 @@ class TurnTracker:
             current = next
         self.head = prev
             
-            
-            
+#cant figure out how to reverse through a linked list, might need variables to call through the class because the code isnt remeboring where o leave off. (tim will skip to lina, then lina reverses but it was left off at time when it should have been at lina)
+#learn more about the nodes and make a TestTurnTracker.py file
+#almsot there (use google, and other peoples projects to try and find linked list methods
         
         
         
