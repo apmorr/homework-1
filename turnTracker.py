@@ -1,3 +1,4 @@
+start = None
 class Node:
     def __init__(self, data=None):
         self.data = data
@@ -9,129 +10,89 @@ class TurnTracker:
     def __init__(self):
         self._head = None
         self._tail = None
-        self._count = 0
-        self._rev = False
+        self._length = 0
+        self._reversed = False
+        self.L = []
+        self._skipping = False
 
     def addPlayer(self, player):
         new_node = Node(player)
-        # print(new_node.data)
         current = self._head
-        if self._count == 0 and not self._head and not self._tail:
+
+        if self._length == 0 and not self._head and not self._tail:
             self._head = new_node
             self._tail = new_node
+
         else:
             self._tail.next = new_node
             new_node.prev = self._tail
             self._tail = new_node
-        self._count += 1
+        self._length += 1
+        self.L.append(new_node.data)
 
+    def insertStart(self, value):
+        new_node = Node(value)
+        current = self._head
+
+        if self._length == 0 and not self._head and not self._tail:
+            self._head = new_node
+            self._tail = new_node
+
+        else:
+            self._head.prev = new_node
+            new_node.next = self._head
+            self._head = new_node
+        self.L.insert(0, new_node.data)
+        self._length += 1
+
+    def removeEnd(self):
+        self.L.pop()
+        print(self.L)
+        self._length -= 1
 
     def nextPlayer(self):  ##does not work yet
+        self._skipping = False
+        foward = []
+        back = []
 
-        current = self._tail
-        temp = None
-        last = self._head
-        cur = None
-        elem = []
+        if self._reversed is False:
 
-        #print(self._tail.data, 'last')
-        #print(current.data)
-        #print(self._head.data, 'first')
-        #print(self._head.data, self._head.next.data, self._tail.prev.data, self._tail.data)
+            for i in self.L:
+                foward.append(i)
+            temp = foward[0]
 
+            if temp:
+                #print(temp)
+                foward.pop(0)
+                foward.append(temp)
+                self.L = foward
+                return temp
 
+        elif self._reversed is True:
 
+            for i in self.L:
+                back.insert(0, i)
+            temp = back[0]
 
-        if self._head == self._tail:
-            print('ok')
-            for i in elem:
-                print(i.data)
+            if temp:
+                #print(temp)
+                back.pop(0)
+                back.append(temp)
+                self.L = back
+                return temp
 
-
-            #print(current.data, last.data, 'yo2')
-            #print(self._head.data, self._head.next.data, self._head.next.next.data, self._tail.prev.data, self._tail.data, 'hey2')
-
-            #temp = current
-            #current = current.prev
-            #print(temp.data, 'end')
-            #current = last
-            #self._tail = last
-            #print(current.data)
-        if current != None:
-            #print(self._head.data, self._head.next.data, self._tail.prev.data, self._tail.data)
-
-            #print(current.data, self._head.data, self._head.next.data, self._head.next.next.data, self._tail.prev.data, self._tail.data)
-
-            #temp = self._head
-            #print(current.data, self._head.data, self._head.next.data, self._head.next.next.data, self._tail.prev.data, self._tail.data)
-
-            #print(current.data, self._head.data, self._head.next.data, self._head.next.next.data, self._tail.prev.data, self._tail.data)
-            temp = current
-            current = current.prev
-            cur = last
-            #last = last.next
-
-
-            #print(self._head.data, self._head.next.data, self._head.next.next.data, self._tail.prev.data, self._tail.data, 'hey1')
-            #print(temp.data, current.data, last.data, cur.data, 'yo1')
-            if self._head == self._tail:
-                print('cool', temp.data, current.data, last.data)
-
-
-            self._tail = current
-            self._head = temp
-            self._head.next = last
-
-            #temp = temp.next
-
-            print(temp.data, current.data, last.data, cur.data, 'yo2')
-            print(self._head.data, self._head.next.data, self._head.next.next.data, self._head.next.next.next.data, self._tail.data, 'hey2')
-
-
-            print(self._head.data, elem, 'FINAL')
-            if elem[len(elem) - 1] != self._head:
-                elem.append(self._head)
-
-
-
-
-
-
-
-            #current = current.prev
-            #print(current.data, self._head.data, self._head.next.data, self._head.next.next.data, self._tail.prev.data, self._tail.data)
-
-            #current = current.prev
-            #self._head = current
-            #print(temp.data, 'going')
-
-
-
-        return self._head.next.data
-
-
-
-        current = self._head
-        temp = None
-
-        if current.next != None:
-            temp = current
-            current = current.next
-            self._head = current
-            return(temp.data)
-
-
-
+    def skipNextPlayer(self):
+        self._skipping = True
+        return self.nextPlayer()
 
     def numberOfPlayers(self):
-        return self._count
-
+        return self._length
 
     def reverseTurnOrder(self):
-        if self._rev == False:
-            self._rev = True
-        elif self._rev == True:
-            self._rev = False
+        if self._reversed == False:
+            self._reversed = True
+        elif self._reversed == True:
+            self._reversed = False
 
 
         '''if self._head != None:
@@ -157,36 +118,16 @@ class TurnTracker:
             self.reverseTurnOrder()'''
 
 
-
-    def printTT(self):
-
-        cur = self._head
-
-        for x in range(self._count):
-            print(cur.data, end=' ')
-            cur = cur.next
-
-
 tt = TurnTracker()
-tt.addPlayer(10)
-tt.addPlayer(20)
-tt.addPlayer(30)
-tt.addPlayer(40)
-tt.addPlayer(50)
-tt.nextPlayer()
-tt.nextPlayer()
-tt.nextPlayer()
-tt.nextPlayer()
-tt.nextPlayer()
-tt.nextPlayer()
-tt.nextPlayer()
-tt.nextPlayer()
-tt.nextPlayer()
-tt.nextPlayer()
-
-
-
-
-tt.printTT()
-
+tt.addPlayer("Jake")
+tt.addPlayer("Lina")
+tt.addPlayer("Tim")
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+tt.skipNextPlayer() # Tim plays Skip card
+print(tt.nextPlayer())
+tt.skipNextPlayer() # Lina plays Skip card
+print(tt.nextPlayer())
+print(tt.nextPlayer())
 
