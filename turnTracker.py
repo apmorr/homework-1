@@ -71,13 +71,6 @@ class TurnTracker:
     def numberOfPlayers(self):
         return self._count
 
-        
-    def reverseTurnOrder(self):
-        temp = []
-        for x in self.L:
-            temp.insert(0, x)
-        self.L = temp
-        return self.L
 
     def reverseTurnOrder(self):
         self.printTT()
