@@ -78,6 +78,26 @@ class TurnTracker:
             temp.insert(0, x)
         self.L = temp
         return self.L
+
+    def reverseTurnOrder(self):
+        self.printTT()
+        elems = []
+        temp = None
+        cur = None
+        first = self._head
+        last = self._tail
+        temp = self._head
+        cur = self._tail
+        self._tail = temp
+        self._head = cur
+        for x in range(self._count):
+            
+            temp = self._head.next
+            cur = self._tail.prev
+            
+            self._tail.prev = temp
+            self._head.next = cur
+            
         
     def printTT(self):
         cur = self._head
