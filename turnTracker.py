@@ -1,21 +1,25 @@
 class Node:
-    def __init__(self, player):
-        self.player = player
-        self.next = None
-        self.prev = None
+    def __init__(self, player): #this creates a node
+        self.player = player #this is the data stored in the node, NOT THE ADRESS
+        self.next = None #this is the ADDRESS for the next node in the list
+        self.prev = None #this isthe ADRESS for the previous node in the list
 
 class TurnTracker:
     def __init__(self):
-        self._head = None
-        self._tail = None
-        self._nextPlayer = None
+        self._head = None #represents the node at the front of the list
+        self._tail = None #represents the node at the end of the list
+        self._nextPlayer = None 
         self._length = 0
         self._reversed = False
         self._skipping = False
 
     def addPlayer(self, player):
         """adds a player to turn tracker"""
-        new_node = Node(player)
+        new_node = Node(player) #when 'Node(player)' is called, it creates a entire new node
+                                #'player' is the data assigned and the variable assigned 'new_node' is the adress
+                                # The new node looks like (.prev=None[.player=data].next=None)
+                                #the .next and .prev variables will be assigned to the adresses of differnt nodes
+                                
         if self._head is None:
             self._head = new_node
             self._tail = new_node
