@@ -1,121 +1,108 @@
-start = None
 class Node:
-    def __init__(self, data=None):
-        self.data = data
-        self.next = self
-        self.prev = self
-
+    def __init__(self, player):
+        self.player = player
+        self.next = None
+        self.prev = None
 
 class TurnTracker:
     def __init__(self):
         self._head = None
         self._tail = None
+        self._nextPlayer = None
         self._length = 0
         self._reversed = False
-        self.L = []
         self._skipping = False
 
     def addPlayer(self, player):
+        """Adds a player to the turn tracker."""
         new_node = Node(player)
-        current = self._head
-
-        if self._length == 0 and not self._head and not self._tail:
+        if self._head is None:
             self._head = new_node
             self._tail = new_node
-
+            new_node.next = new_node
+            new_node.prev = new_node
         else:
-            self._tail.next = new_node
             new_node.prev = self._tail
-            self._tail = new_node
-        self._length += 1
-        self.L.append(new_node.data)
-
-    def insertStart(self, value):
-        new_node = Node(value)
-        current = self._head
-
-        if self._length == 0 and not self._head and not self._tail:
-            self._head = new_node
-            self._tail = new_node
-
-        else:
-            self._head.prev = new_node
             new_node.next = self._head
-            self._head = new_node
-        self.L.insert(0, new_node.data)
+            self._tail.next = new_node
+            self._head.prev = new_node
+            self._tail = new_node
+
+        if self._nextPlayer is None:
+            self._nextPlayer = new_node
+
         self._length += 1
+        
+    def nextPlayer(self):
+        """Returns the next player in the turn order based on the current game state."""
+        if self._length == 0:
+            raise RuntimeError("No players in the turn tracker.")
 
-    def removeEnd(self):
-        self.L.pop()
-        print(self.L)
-        self._length -= 1
+        if self._skipping:
+            if not self._reversed:
+                self._nextPlayer = self._nextPlayer.next
+            else:
+                self._nextPlayer = self._nextPlayer.prev
 
-    def nextPlayer(self):  ##does not work yet
-        self._skipping = False
-        foward = []
-        back = []
+            self._skipping = False
 
-        if self._reversed is False:
+        current_player = self._nextPlayer.player
 
-            for i in self.L:
-                foward.append(i)
-            temp = foward[0]
+        if not self._reversed:
+            self._nextPlayer = self._nextPlayer.next
+        else:
+            self._nextPlayer = self._nextPlayer.prev
 
-            if temp:
-                #print(temp)
-                foward.pop(0)
-                foward.append(temp)
-                self.L = foward
-                return temp
-
-        elif self._reversed is True:
-
-            for i in self.L:
-                back.insert(0, i)
-            temp = back[0]
-
-            if temp:
-                #print(temp)
-                back.pop(0)
-                back.append(temp)
-                self.L = back
-                return temp
-
-    def skipNextPlayer(self):
-        self._skipping = True
-        return self.nextPlayer()
+        return current_player
 
     def numberOfPlayers(self):
+        """Returns the number of players in the turn tracker."""
         return self._length
 
+    def skipNextPlayer(self):
+        """Causes the next player in the turn order to be skipped."""
+        if not self._reversed:
+            if not self._skipping:
+                # Skip one more player.
+                self._nextPlayer = self._nextPlayer.next
+
+            else:
+                # Skip two more players.
+                for _ in range(2):
+                    self._nextPlayer = self._nextPlayer.next
+
+        else:
+            if not self._skipping:
+                # Skip one more player.
+                self._nextPlayer = self._nextPlayer.prev
+
+            else:
+                # Skip two more players.
+                for _ in range(2):
+                    self._nextPlayer = self._nextPlayer.prev
+
+        # Set skipping to True.
+        # If skipNextPlayer() is called again before nextPlayer(), it will skip two more players.
+        # If nextPlayer() is called after skipNextPlayer(), it will skip one more player.
+        # Either way, at least one player will be skipped.
+        # This behavior is consistent with how the Skip card works in Uno.
+        # If a player plays a Skip card, the next player in turn order is skipped.
+        # If two players in a row play Skip cards, the next two players in turn order are skipped.
+        # And so on...
+        # This behavior can be changed by modifying this method.
+        # For example, you could reset skipping to False at the end of this method to only skip one player per call to skipNextPlayer().
+        # Or you could add a parameter to this method to specify how many players to skip.
+        
     def reverseTurnOrder(self):
-        if self._reversed == False:
-            self._reversed = True
-        elif self._reversed == True:
+        """Reverses the current direction of the turn order."""
+        self._nextPlayer = self._head
+
+
+        if not self._reversed:
+              self._reversed = True
+        else: 
             self._reversed = False
-
-
-        '''if self._head != None:
-            node_prev = self._head
-            node_temp = self._head
-            node_cur = self._head.next
-
-            node_prev.next = node_prev
-            node_prev.prev = node_prev
-
-        while(node_cur != self._head):
-            node_temp = node_cur.next
-            node_cur.next = node_prev
-            node_prev.prev = node_cur
-            self._head.next = node_cur
-            node_cur.prev = self._head
-
-            node_prev = node_cur
-            node_cur = node_temp
-
-        self._head = node_prev
-        for i in range(0, 5):
-            self.reverseTurnOrder()'''
+# Example 1 usage 
 
 
 tt = TurnTracker()
@@ -125,9 +112,58 @@ tt.addPlayer("Tim")
 print(tt.nextPlayer())
 print(tt.nextPlayer())
 print(tt.nextPlayer())
+print(tt.nextPlayer())
+print(tt.numberOfPlayers())
+
+ # Example 2
+print ("Example 2")
+tt= TurnTracker()
+tt.addPlayer("Jake")
+tt.addPlayer("Lina")
+tt.addPlayer("Tim")
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+tt.reverseTurnOrder() # Lina plays reverse card
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+
+
+
+#Example 3
+print ("Example 3")
+
+tt= TurnTracker()
+tt.addPlayer("Jake")
+tt.addPlayer("Lina")
+tt.addPlayer("Tim")
+print(tt.nextPlayer())
+print(tt.nextPlayer()) 
+print(tt.nextPlayer())
 tt.skipNextPlayer() # Tim plays Skip card
 print(tt.nextPlayer())
 tt.skipNextPlayer() # Lina plays Skip card
 print(tt.nextPlayer())
 print(tt.nextPlayer())
+
+
+
+#Example 4
+print ("Example 4")
+
+tt =TurnTracker()
+tt.addPlayer("Jake")
+tt.addPlayer("Lina")
+tt.addPlayer("Tim")
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+tt.skipNextPlayer()# Tim plays Skip card
+print(tt.nextPlayer())
+tt.reverseTurnOrder # Lina plays Reverse card
+print(tt.nextPlayer())
+tt.skipNextPlayer() # Jake plays Skip card
+print(tt.nextPlayer())
+print(tt.nextPlayer())
+
 
