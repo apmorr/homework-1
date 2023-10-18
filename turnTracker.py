@@ -50,8 +50,10 @@ class TurnTracker:
 
         if not self._reversed:
             self._nextPlayer = self._nextPlayer.next
+
         else:
             self._nextPlayer = self._nextPlayer.prev
+            current_player = self._nextPlayer.player
 
         return current_player
 
@@ -85,10 +87,11 @@ class TurnTracker:
         
     def reverseTurnOrder(self):
         """reverses direction"""
-        self._nextPlayer = self._head
-
-
+        
         if not self._reversed:
-              self._reversed = True
+            self._nextPlayer = self._nextPlayer.prev
+            self._reversed = True
+              
         else: 
+            self._nextPlayer = self._nextPlayer.next
             self._reversed = False
