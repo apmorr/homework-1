@@ -1,5 +1,5 @@
 import unittest
-from Hw5 import Chessboard
+from hw5 import Chessboard
 
 class TestChessboard(unittest.TestCase):
     def test_solvable_board(self):
